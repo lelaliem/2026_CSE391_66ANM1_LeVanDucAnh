@@ -1,0 +1,93 @@
+/* Reset margin, padding và box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Header */
+#main-header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Menu dùng Flexbox */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+}
+
+/* Nav link */
+.nav-link {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+/* Group selector */
+h1, h2, h3 {
+    font-family: 'Georgia', serif;
+}
+
+/* Hover link */
+a:hover {
+    color: #ff6600;
+    background-color: #eee;
+}
+
+/* Container posts dùng Flexbox */
+.posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* hoặc space-between */
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+/* Card dùng Flexbox thay inline-block */
+.card {
+    flex: 1 1 300px; /* Responsive tự động */
+    border: 1px solid #ddd;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+/* Hover button */
+.btn:hover {
+    background: #0056b3;
+}
+
+/* Responsive: < 768px card full width */
+@media (max-width: 768px) {
+    .posts {
+        flex-direction: column;
+    }
+
+    .card {
+        flex: 1 1 100%;
+    }
+}
