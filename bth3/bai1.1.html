@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý điểm sinh viên</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    padding:20px;
+}
+
+input,button{
+    padding:6px;
+    margin:5px;
+}
+
+table{
+    border-collapse: collapse;
+    width:600px;
+    margin-top:15px;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+}
+
+.low-score{
+    background:yellow;
+}
+
+.stats{
+    margin-top:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Quản lý điểm sinh viên</h2>
+
+<input id="nameInput" placeholder="Họ tên">
+<input id="scoreInput" placeholder="Điểm (0-10)">
+<button id="addBtn">Thêm</button>
+
+<table>
+<thead>
+<tr>
+<th>STT</th>
+<th>Họ tên</th>
+<th>Điểm</th>
+<th>Xếp loại</th>
+<th>Thao tác</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+<div class="stats">
+<span id="total">Tổng SV: 0</span> |
+<span id="avg">Điểm TB: 0</span>
+</div>
+
+<script>
+const students = []
+
+const nameInput = document.getElementById("nameInput")
+const scoreInput = document.getElementById("scoreInput")
+const addBtn = document.getElementById("addBtn")
+const tableBody = document.getElementById("tableBody")
+const totalEl = document.getElementById("total")
+const avgEl = document.getElementById("avg")
+
+function getRank(score){
+    if(score >= 8.5) return "Giỏi"
+    if(score >= 7) return "Khá"
+    if(score >= 5) return "Trung bình"
+    return "Yếu"
+}
+
+function addStudent(){
+    const name = nameInput.value.trim()
+    const score = parseFloat(scoreInput.value)
+
+    if(name === ""){
+        alert("Họ tên không được trống")
+        return
+    }
+
+    if(isNaN(score) || score < 0 || score > 10){
+        alert("Điểm phải từ 0 đến 10")
+        return
+    }
+
+    students.push({name, score})
+
+    nameInput.value = ""
+    scoreInput.value = ""
+    nameInput.focus()
+
+    renderTable()
+}
+
+function renderTable(){
+    tableBody.innerHTML = ""
+
+    let totalScore = 0
+
+    students.forEach((s, index)=>{
+        totalScore += s.score
+
+        const tr = document.createElement("tr")
+
+        if(s.score < 5){
+            tr.classList.add("low-score")
+        }
+
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${s.name}</td>
+            <td>${s.score}</td>
+            <td>${getRank(s.score)}</td>
+            <td>
+                <button data-index="${index}">Xóa</button>
+            </td>
+        `
+
+        tableBody.appendChild(tr)
+    })
+
+    const total = students.length
+    const avg = total ? (totalScore / total).toFixed(2) : 0
+
+    totalEl.textContent = "Tổng SV: " + total
+    avgEl.textContent = "Điểm TB: " + avg
+}
+
+addBtn.addEventListener("click", addStudent)
+
+scoreInput.addEventListener("keydown", e=>{
+    if(e.key === "Enter"){
+        addStudent()
+    }
+})
+
+tableBody.addEventListener("click", e=>{
+    if(e.target.tagName === "BUTTON"){
+        const index = e.target.dataset.index
+        students.splice(index,1)
+        renderTable()
+    }
+})
+</script>
+
+</body>
+</html>
